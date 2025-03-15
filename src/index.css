@@ -1,0 +1,831 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root{
+  --purple-color: #8d27ae;
+  --pink-color: #d9176d;
+  --grey-color: #f3f3f3;
+  --white-color: #fff;
+  --black-color: #010101;;
+  --light-black-color: #717171;
+  --transition: all 300ms ease-in-out;
+}
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html{
+  font-size: 10px;
+}
+body{
+  font-size: 1.6rem;
+  line-height: 1.7;
+  font-family: 'Poppins', sans-serif;
+  color: var(--black-color);
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* resets */
+ul{
+  list-style-type: none;
+}
+a{
+  text-decoration: none;
+  color: var(--black-color);
+}
+button{
+  outline: 0;
+  border: none;
+  font-family: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+img{
+  width: 100%;
+  display: block;
+}
+input{
+  border: none;
+  outline: 0;
+  font-family: inherit;
+  font-size: 1.6rem;
+}
+.resize-animation-stopper *{
+  animation: none!important;
+  transition: none!important;
+}
+
+/* backgrounds */
+.bg-pink{background-color: var(--pink-color);}
+.bg-purple{background-color: var(--purple-color);}
+.bg-white{background-color: var(--white-color);}
+
+/* text */
+.text-black{color: var(--black-color);}
+.text-white{color: var(--white-color);}
+.text-purple{color: var(--purple-color);}
+.text-light-black{color: var(--light-black-color);}
+.text-uppercase{text-transform: uppercase;}
+.text-center{text-align: center;}
+.text-capitalize{text-transform: capitalize;}
+.text-italic{font-style: italic;}
+
+/* font weights */
+.fw-3{font-weight: 300;}
+.fw-4{font-weight: 400;}
+.fw-5{font-weight: 500;}
+.fw-6{font-weight: 600;}
+.fw-7{font-weight: 700;}
+.fw-8{font-weight: 800;}
+.fw-9{font-weight: 900;}
+
+/* font sizes */
+.fs-15{font-size: 1.5rem;}
+.fs-16{font-size: 1.6rem;}
+.fs-17{font-size: 1.7rem;}
+.fs-18{font-size: 1.8rem;}
+.fs-20{font-size: 2rem;}
+.fs-22{font-size: 2.2rem;}
+.fs-24{font-size: 2.4rem;}
+.fs-26{font-size: 2.6rem;}
+
+/* letter spacing */
+.ls-1{letter-spacing: 1px;}
+.ls-2{letter-spacing: 2px;}
+
+.flex{
+  display: flex;
+  align-items: center;
+}
+.flex-column{
+  flex-direction: column;
+}
+.flex-sb{
+  justify-content: space-between;
+}
+.flex-c{
+  justify-content: center;
+}
+.grid{
+  display: grid;
+}
+.container{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* section title */
+.section-title h2{
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 18px 0 24px 0;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+
+.home-background {
+    background: url("./images/bg.jpg");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0 20px;
+}
+
+.form-container{
+    display: flex;
+    width: 450px;
+    height: 600px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 30px;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+}
+
+.form-col{
+    position: relative;
+    width:100%;
+    overflow: hidden;
+}
+
+.btn-box{
+    display:flex;
+    justify-content: center;
+    gap:10px;
+    margin-top: 30px;
+}
+
+.btn{
+    font-weight: 500;
+    padding: 8px 30px;
+    border: none;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-1{
+    background: #21264D;
+}
+
+.btn:hover{
+    opacity: 0.85;
+}
+
+.form-box{
+    position: absolute;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 30px;
+    transition: .3s;
+}
+
+.form-title{
+    margin: 40px 0;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.login-form{
+    left:50%;
+}
+
+.register-form{
+    left:-50%;
+}
+
+.register-form, .form-title{
+    margin-block: 40px 20px;
+}
+
+.form-inputs{
+    width:100%;
+}
+
+.input-box{
+    position: relative;
+}
+
+.inputs{
+    width:100%;
+    height: 55px;
+    margin: 10px 0;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.input-field{
+    font-size: 16px;
+    padding: 0 40px 0 20px;
+    background: rgba(255,255,255,0.2);
+    outline: none;
+    backdrop-filter: blur(20px);
+}
+
+::placeholder{
+    color:#fff;
+    font-size: 15px;
+}
+
+.input-box .icon{
+    position: absolute;
+    top:50%;
+    right: 20px;
+    transform: translateY(-50%);
+    color:#fff;
+    width:17px;
+    height: 17px;
+}
+
+.forgot-pass, .remember-me{
+    display: flex;
+    justify-content: right;
+    gap: 5px;
+}
+
+.forgot-pass a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-pass a:hover{
+    text-decoration: underline;
+}
+
+.remember-me label{
+    color: #fff;
+    font-size: 14px;
+}
+.submit-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #21264D;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.submit-btn:hover{
+    gap: 15px;
+}
+
+.social-login{
+ display: flex;
+ gap:20px;
+ margin-top: 20px;   
+}
+
+.social-login-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width:40px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    color: #fff;
+    cursor: pointer;
+}
+
+.social-login-icon{
+    width: 24px;
+}
+
+.social-login-box:hover{
+    transform: scale(0.9);
+    color: #21264D;
+}
+
+/*=============== GOOGLE FONTS ===============*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+  --first-color: hsl(82, 60%, 28%);
+  --title-color: hsl(0, 0%, 15%);
+  --text-color: hsl(0, 0%, 35%);
+  --body-color: hsl(0, 0%, 95%);
+  --container-color: hsl(0, 0%, 100%);
+  --body-font: "Poppins", sans-serif;
+  --h2-font-size: 1.25rem;
+  --small-font-size: .813rem;
+}
+
+@media screen and (min-width: 1120px) {
+  :root {
+    --h2-font-size: 1.5rem;
+    --small-font-size: .875rem;
+  }
+}
+
+/*=============== BASE ===============*/
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: var(--body-font);
+  background-color: var(--body-color);
+  color: var(--text-color);
+  background: url("./images/bg.jpg");
+  background-size: cover;
+  height: 100vh;
+  background-position: center;
+  position: relative;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/*=============== NAVBAR ===============*/
+header {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  z-index: 99;
+  box-shadow: 0 0 10px #000;
+  background: rgba(0,0,0,0.5);
+  padding: 15px;
+}
+
+header .logo {
+  flex: 1;
+  color: #fff;
+  margin-left: 50px;
+  text-transform: uppercase;
+  font-size: 15px;
+}
+
+header .search-box {
+  flex: 2;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  outline: none;
+  background: #f2f2f2;
+  border-radius: 30px;
+  color: gray;
+  font-size: 16px;
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 40px;
+}
+
+.search-box button {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 30px;
+  border: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: scale(0.9);
+  background: gray;
+}
+
+header ul {
+  flex: 2;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+header ul li {
+  list-style: none;
+}
+
+header ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 10px 15px;
+}
+
+header ul li a:hover {
+  border-bottom: 2px solid cadetblue;
+}
+
+header .menu {
+  font-size: 2.5em;
+  display: none;
+}
+
+@media(max-width:1000px) {
+  header ul {
+    position: fixed;
+    top: 100px;
+    background: rgba(0,0,0,0.5);
+    height: calc(100vh - 100px);
+    width: 50%;
+    flex-direction: column;
+    align-items: center;
+    transition: right 0.5s linear;
+    display: none;
+  }
+  header .menu {
+    display: block;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+  }
+}
+
+@media(max-width:600px) {
+  header .logo {
+    font-size: 10px;
+    margin-left: 8px;
+  }
+  header ul {
+    width: 100%;
+  }
+}
+/*=============== GOOGLE FONTS ===============*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+  /*========== Colors ==========*/
+  /*Color mode HSL(hue, saturation, lightness)*/
+  --first-color: hsl(82, 60%, 28%);
+  --title-color: hsl(0, 0%, 15%);
+  --text-color: hsl(0, 0%, 35%);
+  --body-color: hsl(0, 0%, 95%);
+  --container-color: hsl(0, 0%, 100%);
+
+  /*========== Font and typography ==========*/
+  /*.5rem = 8px | 1rem = 16px ...*/
+  --body-font: "Poppins", sans-serif;
+  --h2-font-size: 1.25rem;
+  --small-font-size: .813rem;
+}
+
+/*========== Responsive typography ==========*/
+@media screen and (min-width: 1120px) {
+  :root {
+    --h2-font-size: 1.5rem;
+    --small-font-size: .875rem;
+  }
+}
+
+/*=============== BASE ===============*/
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: var(--body-font);
+  background-color: var(--body-color);
+  color: var(--text-color);
+}
+
+img {
+  display: block;
+  width: 300px;;
+  height: auto;
+}
+
+/*=============== CARD ===============*/
+.container {
+  display: grid;
+  place-items: center;
+  margin-inline: 1.5rem;
+  padding-block: 5rem;
+}
+
+.card_container {
+  display: grid;
+  row-gap: 3.5rem;
+}
+
+.card_article {
+  position: relative;
+  overflow: hidden;
+}
+
+.card_img {
+  width: 300px;
+  border-radius: 1.5rem;
+  height: 300px;
+}
+
+.card_data {
+  width: 280px;
+  background-color: var(--container-color);
+  padding: 1.5rem 2rem;
+  box-shadow: 0 8px 24px hsla(0, 0%, 0%, .15);
+  border-radius: 1rem;
+  position: absolute;
+  bottom: -9rem;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  opacity: 0;
+  transition: opacity 1s 1s;
+}
+
+.card_description {
+  display: block;
+  font-size: var(--small-font-size);
+  margin-bottom: .25rem;
+}
+
+.card_title {
+  font-size: var(--h2-font-size);
+  font-weight: 500;
+  color: var(--title-color);
+  margin-bottom: .75rem;
+}
+
+.card_button {
+  text-decoration: none;
+  font-size: var(--small-font-size);
+  font-weight: 500;
+  color: var(--first-color);
+}
+
+.card_button:hover {
+  text-decoration: underline;
+}
+
+/* Naming animations in hover */
+.card_article:hover .card_data {
+  animation: show-data 1s forwards;
+  opacity: 1;
+  transition: opacity .3s;
+}
+
+.card_article:hover {
+  animation: remove-overflow 2s forwards;
+}
+
+.card_article:not(:hover) {
+  animation: show-overflow 2s forwards;
+}
+
+.card_article:not(:hover) .card_data {
+  animation: remove-data 1s forwards;
+}
+
+/* Card animation */
+@keyframes show-data {
+  50% {
+    transform: translateY(-10rem);
+  }
+  100% {
+    transform: translateY(-7rem);
+  }
+}
+
+@keyframes remove-overflow {
+  to {
+    overflow: initial;
+  }
+}
+
+@keyframes remove-data {
+  0% {
+    transform: translateY(-7rem);
+  }
+  50% {
+    transform: translateY(-10rem);
+  }
+  100% {
+    transform: translateY(.5rem);
+  }
+}
+
+@keyframes show-overflow {
+  0% {
+    overflow: initial;
+    pointer-events: none;
+  }
+  50% {
+    overflow: hidden;
+  }
+}
+
+/*=============== BREAKPOINTS ===============*/
+/* For small devices */
+@media screen and (max-width: 340px) {
+  .container {
+    margin-inline: 1rem;
+  }
+
+  .card_data {
+    width: 250px;
+    padding: 1rem;
+  }
+}
+
+/* For medium devices */
+@media screen and (min-width: 768px) {
+  .card_container {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1.5rem;
+  }
+}
+
+/* For large devices */
+@media screen and (min-width: 1120px) {
+  .container {
+    height: 100vh;
+  }
+
+  .card_container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .card_img {
+    width: 348px;
+  }
+  .card_data {
+    width: 316px;
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Add or update these styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-y: scroll !important; /* Force scrollbar to be available */
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(142, 68, 173, 0.8); /* Purple with opacity */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(142, 68, 173, 1); /* Solid purple on hover */
+}
+
+/* For pages with lists */
+.booklist, .community-container, .profile-container, .chat-container {
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* If you have a footer, add this */
+footer {
+  flex-shrink: 0;
+}
+
+/* Hide default scrollbar but maintain scroll functionality */
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide default scrollbar for Chrome/Safari/Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom scrollbar container */
+body {
+  position: relative;
+}
+
+/* Custom scrollbar track */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+}
+
+/* Show scrollbar on hover */
+body:hover::after {
+  opacity: 1;
+}
+
+/* Custom scrollbar thumb */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: var(--scroll-thumb-height, 0%);
+  background: var(--purple-color);
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 10000;
+  transform: translateY(var(--scroll-thumb-top, 0px));
+}
+
+/* Show scrollbar thumb on hover */
+body:hover::before {
+  opacity: 1;
+}
+
+/* Add this script to calculate scroll position */
+
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--purple-color, #8e44ad);
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Only show scrollbar on hover */
+::-webkit-scrollbar-thumb:hover {
+  opacity: 1;
+}
+
+/* Main content wrapper */
+#root {
+  min-height: 100vh;
+}
+
+/* Ensure content is scrollable */
+main {
+  padding-top: 60px; /* Height of your navbar */
+  min-height: calc(100vh - 60px);
+}

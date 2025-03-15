@@ -1,0 +1,118 @@
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  width: 100%;
+  padding: 2rem;
+}
+
+/* Book loader animation */
+.book {
+  --color: cadetblue;
+  --duration: 6.8s;
+  width: 32px;
+  height: 48px;
+  position: relative;
+  margin: 32px 0;
+  transform: scale(1.5);
+  perspective: 1000px;
+}
+
+.book__page {
+  width: 32px;
+  height: 48px;
+  background: var(--color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  border-radius: 2px 4px 4px 2px;
+}
+
+.book__page:nth-child(1) {
+  animation: flip1 var(--duration) infinite ease-in-out;
+  animation-delay: 0s;
+}
+
+.book__page:nth-child(2) {
+  animation: flip2 var(--duration) infinite ease-in-out;
+  animation-delay: calc(var(--duration) * 0.2);
+}
+
+.book__page:nth-child(3) {
+  animation: flip3 var(--duration) infinite ease-in-out;
+  animation-delay: calc(var(--duration) * 0.4);
+}
+
+@keyframes flip1 {
+  0%, 20% {
+    transform: rotateY(0deg);
+  }
+  30%, 100% {
+    transform: rotateY(-180deg);
+  }
+}
+
+@keyframes flip2 {
+  0%, 30% {
+    transform: rotateY(0deg);
+  }
+  40%, 100% {
+    transform: rotateY(-180deg);
+  }
+}
+
+@keyframes flip3 {
+  0%, 40% {
+    transform: rotateY(0deg);
+  }
+  50%, 100% {
+    transform: rotateY(-180deg);
+  }
+}
+
+.loading-text {
+  color: #4a5568;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  text-align: center;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .book {
+    transform: scale(1.2);
+  }
+
+  .loading-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loader-container {
+    min-height: 150px;
+    padding: 1rem;
+  }
+
+  .book {
+    transform: scale(1);
+  }
+
+  .loading-text {
+    font-size: 0.9rem;
+  }
+}

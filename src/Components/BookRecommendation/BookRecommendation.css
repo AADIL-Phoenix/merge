@@ -1,0 +1,142 @@
+.recommendations-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2d3748;
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: cadetblue;
+  border-radius: 2px;
+}
+
+.recommendations-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  min-height: 400px;
+}
+
+.error-container {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: #fff5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.error-container p {
+  color: #e53e3e;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.retry-button {
+  background-color: cadetblue;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.retry-button:hover {
+  background-color: #4a7a7a;
+}
+
+.retry-button:active {
+  transform: translateY(1px);
+}
+
+.no-recommendations {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #718096;
+}
+
+.no-recommendations p:first-child {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+}
+
+.no-recommendations p:last-child {
+  font-size: 1rem;
+  color: #718096;
+}
+
+/* Loading animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.recommendations-content {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .recommendations-container {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .recommendations-content {
+    padding: 1rem;
+  }
+
+  .error-container {
+    padding: 2rem 1rem;
+  }
+
+  .no-recommendations p:first-child {
+    font-size: 1.1rem;
+  }
+
+  .no-recommendations p:last-child {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .recommendations-container {
+    padding: 0.5rem;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .retry-button {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}

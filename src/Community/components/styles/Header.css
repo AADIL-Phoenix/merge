@@ -1,0 +1,14 @@
+.header {
+    padding: 1rem;
+    background-color: #1f2937; /* Tailwind's gray-800 */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header h1 {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  

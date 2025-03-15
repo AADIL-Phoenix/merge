@@ -1,0 +1,386 @@
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+/* Profile Header */
+.profile-header {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-pic-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-left: 2rem;
+}
+
+.profile-pic {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f0f0f0;
+}
+
+.photo-change-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 0.25rem;
+  font-size: 0.75rem;
+  text-align: center;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.profile-pic-container:hover .photo-change-overlay {
+  opacity: 1;
+}
+
+.profile-info {
+  flex: 1;
+  text-align: left;
+}
+
+.profile-info h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+}
+
+.follow-stats {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+}
+
+.stat:first-child::after {
+  content: '';
+  display: inline-block;
+  height: 20px;
+  width: 1px;
+  background-color: #ddd;
+  margin: 0 1rem;
+}
+
+.stat .count {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+  margin-right: 0.5rem;
+}
+
+.stat .label {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.edit-profile-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  z-index: 1;
+}
+
+.edit-profile-button:hover {
+  background-color: #0056b3;
+}
+
+.edit-profile-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Bio Section */
+.bio-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bio-section h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+/* Reading Preferences */
+.reading-preferences {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.preferences-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.preference-item {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+}
+
+.add-preference {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.add-preference input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.add-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1976d2;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.add-button:hover {
+  background: #1565c0;
+}
+
+.add-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Search Profiles */
+.search-profiles {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.search-button {
+  padding: 0.75rem 1.5rem;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-button:hover {
+  background: #1565c0;
+}
+
+.search-results {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.profile-result {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.3s;
+}
+
+.profile-result:hover {
+  background: #f5f5f5;
+}
+
+.result-photo img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+/* Suggested Profiles */
+.suggested-profiles {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profiles-carousel {
+  position: relative;
+  padding: 0 2rem;
+}
+
+.profiles-container {
+  display: flex;
+  gap: 1rem;
+  overflow-x: hidden;
+}
+
+.profile-box {
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+  min-width: 100px;
+}
+
+.suggested-photo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 0.5rem;
+}
+
+.suggested-photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #e0e0e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #757575;
+}
+
+.suggested-name {
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  border: 1px solid #ddd;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.carousel-arrow.prev {
+  left: 0;
+}
+
+.carousel-arrow.next {
+  right: 0;
+}
+
+.carousel-arrow:hover {
+  background: #f5f5f5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-pic-container {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .follow-stats {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar {
+    flex-direction: column;
+  }
+
+  .search-button {
+    width: 100%;
+  }
+
+  .profiles-carousel {
+    padding: 0;
+  }
+
+  .carousel-arrow {
+    display: none;
+  }
+
+  .profiles-container {
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+}

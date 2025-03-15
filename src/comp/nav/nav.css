@@ -1,0 +1,265 @@
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--dark-color);
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.logo {
+  flex: 1;
+  text-align: left;
+  margin-left: 50px;
+}
+
+.logo h1 {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 24px;
+}
+
+.search-box {
+  flex: 2;
+  position: relative;
+  margin: 0 20px;
+}
+
+.search-box form {
+  width: 100%;
+}
+
+.search-box input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  outline: none;
+  background: #f2f2f2;
+  border-radius: 30px;
+  color: gray;
+  font-size: 16px;
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 40px;
+}
+
+.search-box button {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 30px;
+  border: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: scale(0.9);
+  background: gray;
+  color: white;
+}
+
+.navbar {
+  flex: 2;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a, .nav-links li .nav-logout-btn {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+}
+
+.nav-links li a:hover, .nav-links li .nav-logout-btn:hover {
+  border-bottom: 2px solid cadetblue;
+}
+
+.menu-icon,
+.toggle_btn {
+  display: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.dropdown_menu,
+.mobile-menu {
+  display: none;
+  position: absolute;
+  right: 2rem;
+  top: 60px;
+  width: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: height 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dropdown_menu.open,
+.mobile-menu.active {
+  display: block;
+}
+
+.dropdown_menu ul,
+.mobile-menu ul {
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown_menu li,
+.mobile-menu li {
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown_menu li a,
+.mobile-menu li a,
+.logout-btn,
+.nav-logout-btn {
+  color: #fff;
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.dropdown_menu li a:hover,
+.mobile-menu li a:hover,
+.logout-btn:hover,
+.nav-logout-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--purple-color);
+}
+
+/* Responsive Design */
+@media(max-width: 1000px) {
+  .nav-links {
+    display: none;
+  }
+
+  .menu-icon,
+  .toggle_btn {
+    display: block;
+  }
+
+  .dropdown_menu {
+    display: block;
+    height: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .dropdown_menu.open {
+    height: auto;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media(max-width: 600px) {
+  .logo {
+    margin-left: 8px;
+  }
+
+  .logo h1 {
+    font-size: 18px;
+  }
+
+  .search-box {
+    flex: 1;
+  }
+
+  .dropdown_menu {
+    left: 2rem;
+    width: unset;
+  }
+}
+
+/* Add to your existing nav.css */
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filter-toggle {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.filter-toggle:hover {
+  color: var(--purple-color);
+}
+
+.search-filters {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 0.5rem;
+  z-index: 1000;
+}
+
+.filter-group {
+  margin-bottom: 0.8rem;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 0.3rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .search-filters {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 1rem 1rem 0 0;
+    padding: 1.5rem;
+  }
+}
