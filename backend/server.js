@@ -12,30 +12,24 @@ connectDB();
 
 // Initialize Middleware
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Log all requests
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`);
+  console.log(`${req.method} ${req.path}`, {
+    query: req.query,
+    body: req.path.includes('photo') ? '<<file upload>>' : req.body
+  });
   next();
 });
 
-// Serve static files from the uploads directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Create uploads directory if it doesn't exist
-const fs = require('fs');
-const uploadDir = path.join(__dirname, 'uploads');
-const profilePhotosDir = path.join(uploadDir, 'profile-photos');
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
-
-if (!fs.existsSync(profilePhotosDir)) {
-  fs.mkdirSync(profilePhotosDir);
-}
+// Configure static file serving for uploads
+const uploadsPath = path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(uploadsPath, {
+  maxAge: '1d',
+  fallthrough: false
+}));
 
 // Define Routes
 app.use('/api/auth', require('./routes/auth'));

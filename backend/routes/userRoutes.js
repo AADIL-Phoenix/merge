@@ -4,20 +4,33 @@ const User = require('../models/User');
 const { protect } = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+
+// Ensure upload directory exists
+const uploadDir = path.join(__dirname, '../uploads/profile-photos');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, path.join(__dirname, '../uploads/profile-photos'));
+    cb(null, uploadDir);
   },
   filename: function(req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    // Sanitize filename
+    const fileName = file.originalname.toLowerCase().replace(/[^a-z0-9.]/g, '-');
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+    cb(null, `${uniqueSuffix}-${fileName}`);
   }
 });
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  limits: { 
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+    files: 1 // Only allow 1 file per request
+  },
   fileFilter: function(req, file, cb) {
     const filetypes = /jpeg|jpg|png/;
     const mimetype = filetypes.test(file.mimetype);
@@ -238,10 +251,29 @@ router.post('/:id/photo', protect, upload.single('photo'), async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    // Delete old photo if it exists
+    if (user.profilePhoto) {
+      const oldPhotoPath = path.join(__dirname, '..', user.profilePhoto);
+      try {
+        // Only attempt to delete if file exists and is not the default profile photo
+        if (fs.existsSync(oldPhotoPath) && !user.profilePhoto.includes('default-avatar')) {
+          fs.unlinkSync(oldPhotoPath);
+          console.log('Deleted old profile photo:', oldPhotoPath);
+        }
+      } catch (err) {
+        console.error('Error deleting old profile photo:', err);
+        // Continue with update even if delete fails
+      }
+    }
+
+    // Set new profile photo path
     user.profilePhoto = `/uploads/profile-photos/${req.file.filename}`;
     await user.save();
 
-    res.json({ photoUrl: user.profilePhoto });
+    res.json({ 
+      photoUrl: user.profilePhoto,
+      message: 'Profile photo updated successfully'
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

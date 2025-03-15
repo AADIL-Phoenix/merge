@@ -13,6 +13,20 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [uploadProgress, setUploadProgress] = useState(0);
+
+  const validateFile = (file) => {
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (!validTypes.includes(file.type)) {
+      throw new Error('Please upload a JPG or PNG image');
+    }
+    if (file.size > maxSize) {
+      throw new Error('File size must be less than 5MB');
+    }
+    return true;
+  };
 
   useEffect(() => {
     if (user) {
@@ -26,11 +40,18 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'photo') {
-      setFormData(prev => ({
-        ...prev,
-        photo: files[0]
-      }));
+    if (name === 'photo' && files[0]) {
+      try {
+        validateFile(files[0]);
+        setFormData(prev => ({
+          ...prev,
+          photo: files[0]
+        }));
+        setError('');
+      } catch (err) {
+        setError(err.message);
+        e.target.value = ''; // Reset file input
+      }
     } else {
       setFormData(prev => ({
         ...prev,
@@ -95,9 +116,14 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
               headers: {
                 ...config.headers,
                 'Content-Type': 'multipart/form-data'
+              },
+              onUploadProgress: (progressEvent) => {
+                const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                setUploadProgress(progress);
               }
             }
           );
+          setUploadProgress(0);
           console.log('Photo update response:', photoResponse.data);
           updatedUser = { ...updatedUser, ...photoResponse.data };
         } catch (err) {
@@ -161,6 +187,13 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
           </div>
 
           {error && <div className="error-message">{error}</div>}
+          {uploadProgress > 0 && uploadProgress < 100 && (
+            <div className="upload-progress">
+              <div className="progress-bar" style={{ width: `${uploadProgress}%` }}>
+                {uploadProgress}%
+              </div>
+            </div>
+          )}
 
           <div className="modal-actions">
             <button 
