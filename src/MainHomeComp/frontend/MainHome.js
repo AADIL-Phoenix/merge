@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../../comp/nav/nav';
-import clubImage from '../../images/club.jpg';
-import topRatedImage from '../../images/top-rated.jpg';
+import clubImage from '../../images/cover12.jpeg';
+import topRatedImage from '../../images/cover14.jpeg';
 import genreImage from '../../images/genre.jpg';
 import './style.css';
 
@@ -53,6 +53,7 @@ const MainHome = () => {
           </Link>
 
           {/* Top Rated Books Card */}
+          <Link to="/top-books" className="card_button">
           <article className="card_article">
             <img
               src={topRatedImage}
@@ -62,11 +63,11 @@ const MainHome = () => {
             <div className="card_data">
               <span className="card_description">Top Rated Books</span>
               <h2 className="card_title">Discover Best Books</h2>
-              <Link to="/top-books" className="card_button">Click Here</Link>
             </div>
           </article>
-
+          </Link>
           {/* Recommendations Card */}
+          <Link to="/recommendations" className="card_button">
           <article className="card_article">
             <img
               src={genreImage}
@@ -76,17 +77,17 @@ const MainHome = () => {
             <div className="card_data">
               <span className="card_description">Recommendations</span>
               <h2 className="card_title">Personalized for You</h2>
-              <Link to="/recommendations" className="card_button">Click Here</Link>
             </div>
           </article>
+          </Link>
         </div>
 
         {/* Scroll indicator that appears only when needed */}
-        {showScrollIcon && (
+        {/* {showScrollIcon && (
           <div className="scroll-indicator" onClick={scrollToBottom}>
             <div className="scroll-arrow"></div>
           </div>
-        )}
+        )} */}
       </main>
     </div>
   );

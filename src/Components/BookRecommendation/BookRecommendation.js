@@ -19,13 +19,45 @@ const BookRecommendation = () => {
       setError(null);
 
       console.log('Fetching recommendations...'); // Debug log
-      const result = await BookApiService.getRecommendations();
+      
+      // Try to get recommendations
+      let result = await BookApiService.getRecommendations();
       console.log('API Response:', result); // Debug log
 
-      if (result.status === 'success' && Array.isArray(result.data)) {
-        setBooks(result.data);
+      // If the recommendations API fails, try direct fallback instead of relying on the service's internal fallback
+      if (result.status !== 'success' || !Array.isArray(result.data) || result.data.length === 0) {
+        console.log('Recommendations failed or returned empty, trying direct fallback');
+        
+        // Try a direct API call to Google Books
+        const fallbackResponse = await fetch('https://www.googleapis.com/books/v1/volumes?q=bestseller&maxResults=10');
+        
+        if (!fallbackResponse.ok) {
+          throw new Error(`Fallback API request failed: ${fallbackResponse.status}`);
+        }
+        
+        const fallbackData = await fallbackResponse.json();
+        
+        if (fallbackData && Array.isArray(fallbackData.items) && fallbackData.items.length > 0) {
+          // Format the data to match our expected structure
+          const formattedBooks = fallbackData.items.map(book => ({
+            id: book.id,
+            title: book.volumeInfo.title,
+            author: book.volumeInfo.authors?.join(', ') || 'Unknown Author',
+            description: book.volumeInfo.description || 'No description available',
+            coverImage: book.volumeInfo.imageLinks?.thumbnail || null,
+            rating: book.volumeInfo.averageRating || 0,
+            publishedDate: book.volumeInfo.publishedDate || 'Unknown',
+            pageCount: book.volumeInfo.pageCount || 'Unknown',
+            categories: book.volumeInfo.categories || []
+          }));
+          
+          setBooks(formattedBooks);
+        } else {
+          throw new Error('No books found in API response');
+        }
       } else {
-        throw new Error('Invalid response format');
+        // Use the recommendations result
+        setBooks(result.data);
       }
     } catch (error) {
       console.error('Error fetching books:', error);
@@ -37,16 +69,39 @@ const BookRecommendation = () => {
       } else {
         setError('Failed to load recommendations. Please try again later.');
         
-        // Try fallback to top rated books
+        // Last resort: try a simple, different query
         try {
-          const fallbackResult = await BookApiService.getTopRatedBooks(10);
-          if (fallbackResult.status === 'success' && Array.isArray(fallbackResult.data)) {
-            setBooks(fallbackResult.data);
-            setError(null);
+          console.log('Attempting last resort query');
+          const lastResortResponse = await fetch('https://www.googleapis.com/books/v1/volumes?q=fiction');
+          
+          if (lastResortResponse.ok) {
+            const lastResortData = await lastResortResponse.json();
+            
+            if (lastResortData && Array.isArray(lastResortData.items) && lastResortData.items.length > 0) {
+              // Format the data
+              const lastResortBooks = lastResortData.items.map(book => ({
+                id: book.id,
+                title: book.volumeInfo.title,
+                author: book.volumeInfo.authors?.join(', ') || 'Unknown Author',
+                description: book.volumeInfo.description || 'No description available',
+                coverImage: book.volumeInfo.imageLinks?.thumbnail || null,
+                rating: book.volumeInfo.averageRating || 0,
+                publishedDate: book.volumeInfo.publishedDate || 'Unknown',
+                pageCount: book.volumeInfo.pageCount || 'Unknown',
+                categories: book.volumeInfo.categories || []
+              }));
+              
+              setBooks(lastResortBooks);
+              setError(null); // Clear error if we got books
+            } else {
+              throw new Error('No books found in last resort query');
+            }
+          } else {
+            throw new Error(`Last resort query failed: ${lastResortResponse.status}`);
           }
-        } catch (fallbackError) {
-          console.error('Fallback request failed:', fallbackError);
-          setError('Unable to load any book recommendations.');
+        } catch (lastResortError) {
+          console.error('Last resort request failed:', lastResortError);
+          setError('Unable to load any book recommendations. Please check your internet connection and try again.');
         }
       }
     } finally {

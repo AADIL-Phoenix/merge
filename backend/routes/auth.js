@@ -11,17 +11,27 @@ router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    // Validate inputs
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Please provide all required fields' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+    }
+
     // Check if user already exists
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: 'Email is already registered' });
     }
 
     // Create new user
     user = new User({
       name,
       email,
-      password
+      password,
+      hasProfile: false
     });
 
     await user.save();
@@ -29,17 +39,22 @@ router.post('/register', async (req, res) => {
     // Create JWT token
     const token = jwt.sign(
       { _id: user._id },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
+      process.env.JWT_SECRET,
+      { expiresIn: '24h', algorithm: 'HS256' }
     );
 
-    res.json({
+    // Return user without sensitive information
+    const userResponse = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      hasProfile: user.hasProfile,
+      createdAt: user.createdAt
+    };
+
+    res.status(201).json({
       token,
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email
-      }
+      user: userResponse
     });
   } catch (err) {
     console.error(err);
@@ -54,6 +69,11 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Validate inputs
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Please provide email and password' });
+    }
+
     // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
@@ -66,20 +86,29 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
+    // Update last active timestamp
+    user.lastActive = new Date();
+    await user.save();
+
     // Create JWT token
     const token = jwt.sign(
       { _id: user._id },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
+      process.env.JWT_SECRET,
+      { expiresIn: '24h', algorithm: 'HS256' }
     );
+
+    // Return user without sensitive information
+    const userResponse = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      hasProfile: user.hasProfile,
+      lastActive: user.lastActive
+    };
 
     res.json({
       token,
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email
-      }
+      user: userResponse
     });
   } catch (err) {
     console.error(err);

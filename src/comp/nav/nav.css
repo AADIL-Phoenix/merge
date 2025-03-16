@@ -231,6 +231,9 @@ header {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin-top: 0.5rem;
   z-index: 1000;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
 }
 
 .filter-group {
@@ -252,6 +255,21 @@ header {
   font-size: 0.9rem;
 }
 
+.search-loading {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dark-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
 @media (max-width: 768px) {
   .search-filters {
     position: fixed;
@@ -261,5 +279,16 @@ header {
     right: 0;
     border-radius: 1rem 1rem 0 0;
     padding: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+  }
+
+  .search-loading {
+    position: fixed;
+    bottom: 1rem;
+    top: auto;
+    transform: translateX(-50%);
   }
 }

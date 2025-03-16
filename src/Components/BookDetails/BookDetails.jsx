@@ -12,34 +12,44 @@ const BookDetails = () => {
   const [loading, setLoading] = useState(false);
   const [book, setBook] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
+    
     async function getBookDetails() {
       try {
         if (!id) {
           console.error("No book ID provided");
+          setError("No book ID provided");
           setLoading(false);
           return;
         }
 
-        const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes/${id}?key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}`
-        );
+        console.log("Fetching details for book ID:", id);
+        
+        // Removed API key from URL for security
+        const apiUrl = `https://www.googleapis.com/books/v1/volumes/${id}`;
+        console.log("Fetching from:", apiUrl);
+        
+        const response = await fetch(apiUrl);
 
         if (!response.ok) {
+          console.error(`API request failed with status: ${response.status}`);
           throw new Error(`Failed to fetch book details: ${response.statusText}`);
         }
 
         const data = await response.json();
+        console.log("Book details response:", data);
 
         if (data && data.volumeInfo) {
           const { volumeInfo } = data;
           const newBook = {
             description: volumeInfo.description || "No description found",
             title: volumeInfo.title || "Unknown title",
-            cover_img: volumeInfo.imageLinks?.thumbnail || coverImg,
+            cover_img: volumeInfo.imageLinks?.thumbnail?.replace('http://', 'https://') || coverImg,
             author: volumeInfo.authors?.join(", ") || "No author found",
             published_date: volumeInfo.publishedDate || "No publish date found",
             publisher: volumeInfo.publisher || "No publisher found",
@@ -50,13 +60,16 @@ const BookDetails = () => {
             rating: volumeInfo.averageRating,
             ratings_count: volumeInfo.ratingsCount
           };
+          console.log("Processed book details:", newBook);
           setBook(newBook);
         } else {
           console.error("Invalid book data received");
+          setError("Could not load book information");
           setBook(null);
         }
       } catch (error) {
         console.error("Error fetching book details:", error);
+        setError(`Error loading book: ${error.message || "Unknown error"}`);
         setBook(null);
       } finally {
         setLoading(false);
@@ -74,6 +87,23 @@ const BookDetails = () => {
   };
 
   if (loading) return <Loading />;
+  
+  if (error) {
+    return (
+      <section className='book-details'>
+        <div className='container'>
+          <button type='button' className='flex flex-c back-btn' onClick={() => navigate("/")}>
+            <FaArrowLeft size={22} />
+            <span className='fs-18 fw-6'>Go Back</span>
+          </button>
+          <div className="error-message">
+            <h2>Error Loading Book</h2>
+            <p>{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className='book-details'>
@@ -87,7 +117,15 @@ const BookDetails = () => {
         {book ? (
           <div className='book-details-content grid'>
             <div className='book-details-img'>
-              <img src={book.cover_img} alt={`${book.title} cover`} />
+              <img 
+                src={book.cover_img} 
+                alt={`${book.title} cover`}
+                onError={(e) => {
+                  console.log("Cover image load error");
+                  e.target.onerror = null;
+                  e.target.src = coverImg;
+                }}
+              />
               {book.rating && (
                 <div className='book-rating'>
                   <span>{book.rating}</span>

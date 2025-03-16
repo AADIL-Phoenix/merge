@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BookList from '../BookList/BookList';
 import Loader from '../Loader/Loader';
+import BookApiService from '../BookApiService';
 import './TopRatedBooks.css';
 
 const TopRatedBooks = () => {
@@ -14,18 +15,16 @@ const TopRatedBooks = () => {
         // Adding a minimal delay to prevent flickering
         const loadingDelay = new Promise(resolve => setTimeout(resolve, 500));
         
-        const response = await fetch('/api/books?sort=rating&order=desc&limit=20');
-        if (!response.ok) {
-          throw new Error('Failed to fetch top rated books');
-        }
-
-        const data = await response.json();
+        const result = await BookApiService.getTopRatedBooks(20);
         await loadingDelay; // Wait for minimal loading time
 
-        if (data.status === 'success' && Array.isArray(data.data)) {
-          setBooks(data.data);
+        if (result.status === 'success' && Array.isArray(result.data)) {
+          setBooks(result.data);
         } else {
           setBooks([]);
+          if (result.status === 'error') {
+            throw new Error(result.message);
+          }
         }
       } catch (error) {
         console.error('Error fetching top rated books:', error);
@@ -41,7 +40,7 @@ const TopRatedBooks = () => {
   if (loading) {
     return (
       <div className="top-rated-container">
-        <Loader />
+        <Loader message="Loading top rated books..." />
       </div>
     );
   }
@@ -54,6 +53,7 @@ const TopRatedBooks = () => {
           <button 
             className="retry-button"
             onClick={() => window.location.reload()}
+            aria-label="Retry loading top rated books"
           >
             Try Again
           </button>

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import coverImg from "./images/cover_not_found.jpg";
-import { login as authLogin, register as authRegister, logout as authLogout, getCurrentUser, setAuthToken } from './Login/auth';
+import AuthService from './Login/auth';
 
 const AppContext = React.createContext();
 
@@ -8,8 +8,7 @@ const URL = "https://www.googleapis.com/books/v1/volumes?q=";
 
 const getStoredUser = () => {
     try {
-        const token = localStorage.getItem('token');
-        return token ? JSON.parse(localStorage.getItem('user')) : null;
+        return AuthService.getUser() || null;
     } catch (error) {
         console.error('Error reading user from storage:', error);
         return null;
@@ -35,29 +34,22 @@ const AppProvider = ({ children }) => {
     const [recentlyViewed, setRecentlyViewed] = useState(getRecentlyViewed);
     const [isInitialized, setIsInitialized] = useState(false);
     const [authError, setAuthError] = useState(null);
+    const [debugInfo, setDebugInfo] = useState({ lastApiCall: '', apiResponse: null });
 
-    // Initialize auth state on load
+    // ✅ Initialize auth state on load
     useEffect(() => {
         const initAuth = async () => {
             try {
-                // Set auth token for axios if it exists
-                const token = localStorage.getItem('token');
-                if (token) {
-                    setAuthToken(token);
-                }
-                const currentUser = await getCurrentUser();
-                if (currentUser) {
-                    setUser(currentUser);
-                    localStorage.setItem('user', JSON.stringify(currentUser));
+                const result = await AuthService.getCurrentUser();
+                if (result?.success) {
+                    setUser(result.data.user);
                 } else {
-                    localStorage.removeItem('user');
-                    localStorage.removeItem('token');
+                    AuthService.clearStorage();
                     setUser(null);
                 }
             } catch (error) {
                 console.error('Error initializing auth:', error);
-                localStorage.removeItem('user');
-                localStorage.removeItem('token');
+                AuthService.clearStorage();
                 setUser(null);
             } finally {
                 setIsInitialized(true);
@@ -67,12 +59,12 @@ const AppProvider = ({ children }) => {
         initAuth();
     }, []);
 
-    // Store recently viewed books in localStorage
+    // ✅ Store recently viewed books in localStorage
     useEffect(() => {
         localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
     }, [recentlyViewed]);
 
-    // Add to recently viewed list
+    // ✅ Add to recently viewed list
     const addToRecentlyViewed = useCallback((book) => {
         setRecentlyViewed((prev) => {
             const filtered = prev.filter((b) => b.id !== book.id);
@@ -80,101 +72,126 @@ const AppProvider = ({ children }) => {
         });
     }, []);
 
-    // Login User
-    const login = useCallback(async (email, password) => {
+    // ✅ Login User
+    const login = useCallback(async (username, password) => {
         setAuthError(null);
         try {
-            const result = await authLogin({ email, password });
-            if (result?.user) {
-                setUser(result.user);
-                localStorage.setItem('user', JSON.stringify(result.user));
-                // Set auth token after successful login
-                if (result.token) {
-                    setAuthToken(result.token);
-                }
+            const result = await AuthService.login(username, password);
+            if (result?.success) {
+                setUser(result.data.user);
                 return { success: true };
             }
-            throw new Error('Login failed');
+            const errorMsg = result.error || "Login failed";
+            setAuthError(errorMsg);
+            return { success: false, error: errorMsg };
         } catch (error) {
             console.error('Login error:', error);
-            const errorMsg = error.message || 'Login failed. Please try again.';
+            const errorMsg = 'Login failed. Try again.';
             setAuthError(errorMsg);
             return { success: false, error: errorMsg };
         }
     }, []);
 
-    // Register User
-    const register = useCallback(async (name, email, password) => {
+    // ✅ Register User
+    const register = useCallback(async (email, username, password) => {
         setAuthError(null);
         try {
-            const result = await authRegister({ name, email, password });
-            if (result?.user) {
-                setUser(result.user);
-                localStorage.setItem('user', JSON.stringify(result.user));
-                // Set auth token after successful registration
-                if (result.token) {
-                    setAuthToken(result.token);
-                }
+            const result = await AuthService.register(email, username, password);
+            if (result?.success) {
+                setUser(result.data.user);
                 return { success: true };
             }
-            throw new Error('Registration failed');
+            const errorMsg = result.error || "Registration failed";
+            setAuthError(errorMsg);
+            return { success: false, error: errorMsg };
         } catch (error) {
             console.error('Registration error:', error);
-            const errorMsg = error.message || 'Registration failed. Please try again.';
+            const errorMsg = 'Registration failed. Try again.';
             setAuthError(errorMsg);
             return { success: false, error: errorMsg };
         }
     }, []);
 
-    // Logout User
+    // ✅ Logout User
     const logout = useCallback(async () => {
         try {
-            authLogout();
-            localStorage.removeItem('user');
-            setUser(null);
-            setRecentlyViewed([]);
-            // Clear auth token on logout
-            setAuthToken(null);
+            await AuthService.logout();
         } catch (error) {
             console.error('Logout error:', error);
+        } finally {
+            setUser(null);
+            setRecentlyViewed([]);
         }
     }, []);
 
-    // Search Books
+    // ✅ Search Books - Modified with more debugging
     useEffect(() => {
-        if (!searchTerm) return;
-
+        if (!searchTerm) {
+            console.log("Search term is empty, skipping API call");
+            return;
+        }
+        
+        console.log("Starting search with term:", searchTerm);
+        
         let isMounted = true;
         const fetchBooks = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`${URL}${encodeURIComponent(searchTerm)}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                // Handle either string or object format of searchTerm
+                const query = typeof searchTerm === 'string' ? searchTerm : searchTerm.query;
+                const filters = typeof searchTerm === 'object' ? searchTerm.filters : {};
+                
+                // Build URL with query parameters
+                let apiUrl = `${URL}${encodeURIComponent(query)}&maxResults=40`;
+                
+                // Add filters as query parameters if they exist
+                if (filters) {
+                    if (filters.orderBy && filters.orderBy !== 'relevance') {
+                        apiUrl += `&orderBy=${filters.orderBy}`;
+                    }
+                    if (filters.printType && filters.printType !== 'all') {
+                        apiUrl += `&printType=${filters.printType}`;
+                    }
+                    if (filters.maxResults) {
+                        apiUrl += `&maxResults=${filters.maxResults}`;
+                    }
                 }
+                
+                console.log("Fetching books from:", apiUrl);
+                setDebugInfo(prev => ({ ...prev, lastApiCall: apiUrl }));
+                
+                const response = await fetch(apiUrl);
                 const data = await response.json();
-
+                
+                console.log("API Response status:", response.status);
+                console.log("API Response data:", data);
+                setDebugInfo(prev => ({ ...prev, apiResponse: data }));
+                
                 if (data?.items) {
                     const newBooks = data.items.map((item) => {
                         const { volumeInfo } = item;
                         return {
                             id: item.id,
-                            title: volumeInfo?.title || "No Title",
-                            author: volumeInfo?.authors ? volumeInfo.authors.join(", ") : "No author listed",
-                            cover_img: volumeInfo?.imageLinks?.thumbnail?.replace('http://', 'https://') || coverImg,
-                            published: volumeInfo?.publishedDate || "N/A",
+                            title: volumeInfo?.title || "Unknown Title",
+                            author: volumeInfo?.authors ? volumeInfo.authors.join(", ") : "Unknown Author",
+                            coverImage: volumeInfo?.imageLinks?.thumbnail?.replace('http://', 'https://') || "",
                             description: volumeInfo?.description || "No description available",
-                            rating: volumeInfo?.averageRating || 0,
+                            averageRating: volumeInfo?.averageRating || 0,
                             ratingsCount: volumeInfo?.ratingsCount || 0,
-                            genre: volumeInfo?.categories?.[0] || "Uncategorized"
+                            genre: volumeInfo?.categories || []
                         };
                     });
+                    
+                    console.log(`Processed ${newBooks.length} books`, newBooks);
+                    
                     if (isMounted) {
                         setBooks(newBooks);
-                        setResultTitle(`Search results for "${searchTerm}"`);
+                        setResultTitle(`Search results for "${query}"`);
+                        console.log("Updated books state with", newBooks.length, "items");
                     }
                 } else {
                     if (isMounted) {
+                        console.log("No books found in response");
                         setBooks([]);
                         setResultTitle("No Books Found!");
                     }
@@ -205,6 +222,7 @@ const AppProvider = ({ children }) => {
             loading,
             books,
             setBooks,
+            searchTerm,
             setSearchTerm,
             resultTitle,
             setResultTitle,
@@ -217,7 +235,8 @@ const AppProvider = ({ children }) => {
             setAuthError,
             recentlyViewed,
             addToRecentlyViewed,
-            isInitialized
+            isInitialized,
+            debugInfo
         }}>
             {children}
         </AppContext.Provider>

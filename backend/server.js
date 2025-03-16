@@ -1,16 +1,25 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const connectDB = require('./config/db');
-require('dotenv').config();
+const { connectDB, disconnectDB } = require('./config/db');
+const limiter = require('./middleware/rateLimit');
 
 const app = express();
 
 // Connect Database
-connectDB();
+(async () => {
+  try {
+    await connectDB();
+  } catch (error) {
+    console.error('Failed to connect to database:', error.message);
+    process.exit(1);
+  }
+})();
 
 // Initialize Middleware
+app.use(limiter);
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -68,16 +77,46 @@ const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
+// Graceful shutdown handling
+const shutdown = async () => {
+  try {
+    console.log('Starting graceful shutdown...');
+    
+    // Close server first
+    await new Promise((resolve, reject) => {
+      server.close((err) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve();
+      });
+    });
+    console.log('Server closed');
+
+    // Disconnect from database
+    await disconnectDB();
+    console.log('Graceful shutdown completed');
+    
+    process.exit(0);
+  } catch (error) {
+    console.error('Error during shutdown:', error);
+    process.exit(1);
+  }
+};
+
+// Handle various shutdown signals
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
+
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
-  console.log('Unhandled Rejection:', err.message);
-  // Close server & exit process
-  server.close(() => process.exit(1));
+  console.error('Unhandled Rejection:', err);
+  shutdown();
 });
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
-  console.log('Uncaught Exception:', err.message);
-  // Close server & exit process
-  server.close(() => process.exit(1));
+  console.error('Uncaught Exception:', err);
+  shutdown();
 });

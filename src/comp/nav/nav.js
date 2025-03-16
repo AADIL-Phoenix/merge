@@ -17,20 +17,31 @@ const Navbar = () => {
     printType: 'all',
     maxResults: 30
   });
+  const [isSearching, setIsSearching] = useState(false);
   const dropdownRef = useRef(null);
   const toggleBtnRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const menuIconRef = useRef(null);
 
   // Handle search submit
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = async (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      setSearchTerm(searchQuery);
-      setResultTitle(`Search results for "${searchQuery}"`);
-      navigate('/books');
-      setSearchQuery('');
-      setShowFilters(false);
+      setIsSearching(true);
+      try {
+        const searchParams = {
+          query: searchQuery.trim(),
+          ...filters
+        };
+        setSearchTerm(searchParams);
+        setResultTitle(`Search results for "${searchQuery}"`);
+        navigate('/books');
+        setShowFilters(false);
+      } catch (error) {
+        console.error('Search error:', error);
+      } finally {
+        setIsSearching(false);
+      }
     }
   };
 
@@ -135,8 +146,21 @@ const Navbar = () => {
                   <option value="magazines">Magazines</option>
                 </select>
               </div>
+              <div className="filter-group">
+                <label>Results:</label>
+                <select 
+                  value={filters.maxResults}
+                  onChange={(e) => setFilters({...filters, maxResults: Number(e.target.value)})}
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                  <option value="40">40</option>
+                </select>
+              </div>
             </div>
           )}
+          {isSearching && <div className="search-loading">Searching...</div>}
         </form>
       </div>
 

@@ -133,7 +133,7 @@ input{
 }
 
 .home-background {
-    background: url("./images/bg.jpg");
+    background: url("./images/cover1.jpeg");
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
@@ -354,7 +354,7 @@ body {
   font-family: var(--body-font);
   background-color: var(--body-color);
   color: var(--text-color);
-  background: url("./images/bg.jpg");
+  background: url("./images/cover1.jpeg");
   background-size: cover;
   height: 100vh;
   background-position: center;

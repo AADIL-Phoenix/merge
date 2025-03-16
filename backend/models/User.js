@@ -12,12 +12,13 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
-    lowercase: true
+    lowercase: true,
+    match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Please enter a valid email']
   },
   password: {
     type: String,
     required: true,
-    minlength: 6
+    minlength: [6, 'Password must be at least 6 characters long']
   },
   profilePhoto: {
     type: String,
@@ -26,7 +27,11 @@ const userSchema = new mongoose.Schema({
   bio: {
     type: String,
     default: '',
-    maxlength: 500
+    maxlength: [500, 'Bio cannot be more than 500 characters']
+  },
+  hasProfile: {
+    type: Boolean,
+    default: false
   },
   readingPreferences: {
     genres: [{
@@ -42,10 +47,6 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }],
-  hasProfile: {
-    type: Boolean,
-    default: false
-  },
   createdAt: {
     type: Date,
     default: Date.now

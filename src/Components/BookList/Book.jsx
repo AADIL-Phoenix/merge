@@ -3,15 +3,25 @@ import { Link } from 'react-router-dom';
 import './BookList.css';
 
 const Book = ({ book }) => {
+  console.log("Book component rendering with data:", book);
+  
+  // Handle case where book object is undefined or null
+  if (!book) {
+    console.error("Book data is undefined or null");
+    return <div className="book-card book-card-error">Book data unavailable</div>;
+  }
+
   const {
-    id,
-    title,
-    author,
-    coverImage,
-    averageRating,
-    ratingsCount,
-    genre
+    id = '',
+    title = 'Unknown Title',
+    author = 'Unknown Author',
+    coverImage = '',
+    averageRating = 0,
+    ratingsCount = 0,
+    genre = []
   } = book;
+
+  console.log("Book values after destructuring:", { id, title, author, coverImage });
 
   // Convert rating to stars
   const renderStars = (rating) => {
@@ -47,6 +57,7 @@ const Book = ({ book }) => {
           src={coverImage || defaultCoverImage}
           alt={title}
           onError={(e) => {
+            console.log("Image load error for:", title);
             e.target.onerror = null;
             e.target.src = defaultCoverImage;
           }}

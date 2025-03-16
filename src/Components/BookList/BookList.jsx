@@ -3,7 +3,20 @@ import Book from './Book';
 import './BookList.css';
 
 const BookList = ({ books }) => {
-  if (!books || books.length === 0) {
+  console.log("BookList rendering with:", books);
+  
+  if (!books) {
+    console.error("Books prop is undefined or null");
+    return (
+      <div className="no-books error">
+        <p>Data error: Books information is missing.</p>
+        <p>Please try refreshing the page.</p>
+      </div>
+    );
+  }
+  
+  if (books.length === 0) {
+    console.log("Empty books array received");
     return (
       <div className="no-books">
         <p>No books found.</p>
@@ -14,11 +27,14 @@ const BookList = ({ books }) => {
 
   return (
     <div className="books-grid" role="list">
-      {books.map((book) => (
-        <div key={book.id} role="listitem">
-          <Book book={book} />
-        </div>
-      ))}
+      {books.map((book) => {
+        console.log("Rendering book:", book.id, book.title);
+        return (
+          <div key={book.id} role="listitem">
+            <Book book={book} />
+          </div>
+        );
+      })}
     </div>
   );
 };
