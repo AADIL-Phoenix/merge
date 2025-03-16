@@ -35,7 +35,7 @@ const Navbar = () => {
         };
         setSearchTerm(searchParams);
         setResultTitle(`Search results for "${searchQuery}"`);
-        navigate('/books');
+        navigate('/book');
         setShowFilters(false);
       } catch (error) {
         console.error('Search error:', error);
@@ -106,7 +106,7 @@ const Navbar = () => {
               type="text" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search books, authors, genres" 
+              placeholder="Search books" 
               aria-label="Search"
             />
             <button 

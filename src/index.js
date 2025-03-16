@@ -5,6 +5,7 @@ import { AppProvider, useGlobalContext } from './context.js';
 import Layout from './comp/layout/layout';
 import App from './App';
 import './index.css';
+import ChatsPage from './Components/Chats/ChatsPage';
 import MainHome from './MainHomeComp/frontend/MainHome';
 import BookList from "./Components/BookList/BookList";
 import BookDetails from "./Components/BookDetails/BookDetails";
@@ -58,13 +59,17 @@ root.render(
           <Route path="/register" element={<Login initialView="register" />} />
           
           {/* Protected routes */}
-          <Route path="/" element={<MainHome />} />
-          <Route path="/book" element={<SearchResults />} />
-          <Route path="/book/:id" element={<BookDetails />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/create-profile" element={<CreateProfile />} />
-          <Route path="/community/profile" element={<UserProfile />} />
-          
+          <Route path="/" element={<ProtectedRoute><MainHome /></ProtectedRoute>} />
+          <Route path="/book" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />
+          <Route path="/chats" element={<ProtectedRoute><ChatsPage /> </ProtectedRoute>} />
+          <Route path="/chats/:chatId" element={<ProtectedRoute><ChatsPage /> </ProtectedRoute>} />
+          <Route path="/chats/group/:groupId" element={<ProtectedRoute><ChatsPage /> </ProtectedRoute>} />
+          <Route path="/book/:id" element={<ProtectedRoute><BookDetails /></ProtectedRoute>} />
+          <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
+          <Route path="/create-profile" element={<ProtectedRoute><CreateProfile /></ProtectedRoute>} />
+          <Route path="/community/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+          <Route path="/profile/:id" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
           {/* Protected recommendation routes */}
           <Route path="/recommendations/:type" element={<BookRecommendation />} />
           <Route path="/recommendations" element={<Navigate to="/recommendations/top-rated" replace />} />

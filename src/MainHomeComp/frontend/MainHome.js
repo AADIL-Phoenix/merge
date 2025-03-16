@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../../comp/nav/nav';
 import clubImage from '../../images/cover12.jpeg';
-import topRatedImage from '../../images/cover14.jpeg';
+import topRatedImage from '../../images/img13.jpg';
 import genreImage from '../../images/genre.jpg';
 import './style.css';
 

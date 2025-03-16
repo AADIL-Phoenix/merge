@@ -1,5 +1,6 @@
 import React from 'react';
 import Book from './Book';
+import {Link} from 'react-router-dom';
 import './BookList.css';
 
 const BookList = ({ books }) => {
@@ -31,7 +32,9 @@ const BookList = ({ books }) => {
         console.log("Rendering book:", book.id, book.title);
         return (
           <div key={book.id} role="listitem">
+            <Link to={`/book/${book.id}`}>
             <Book book={book} />
+            </Link>
           </div>
         );
       })}
