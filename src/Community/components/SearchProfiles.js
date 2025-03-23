@@ -16,7 +16,7 @@ const SearchProfiles = () => {
     try {
       setSearching(true);
       setError('');
-      const response = await axios.get(`/api/users/search?q=${searchTerm}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/search?q=${searchTerm}`);
       setSearchResults(response.data);
     } catch (error) {
       setError('Error searching profiles');

@@ -16,7 +16,7 @@ const SuggestedProfiles = ({ currentUserId, excludeIds = [] }) => {
     const fetchSuggestedUsers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/users/${currentUserId}/suggested`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/${currentUserId}/suggested`);
         const filtered = response.data.filter(user => !excludeIds.includes(user._id));
         setSuggestedUsers(filtered);
         setError('');

@@ -25,7 +25,7 @@ const ReadingPreferences = ({ preferences = [], isOwnProfile, onGenreAdded }) =>
         throw new Error('User not found');
       }
 
-      const response = await axios.post(`/api/users/${currentUser._id}/reading-preferences`, 
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/${currentUser._id}/reading-preferences`, 
         { genre: newGenre.trim() },
         {
           headers: {

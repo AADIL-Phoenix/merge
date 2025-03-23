@@ -23,7 +23,7 @@ const BookPreview = ({ bookId, bookTitle, onClose }) => {
         // Track book view in our backend
         const token = localStorage.getItem('token');
         if (token) {
-          await fetch(`/api/books/${bookId}/view`, {
+          await fetch(`${process.env.REACT_APP_API_URL}/api/books/${bookId}/view`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -60,7 +60,7 @@ const BookPreview = ({ bookId, bookTitle, onClose }) => {
         return;
       }
 
-      const response = await fetch(`/api/books/user/collection/${bookId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/books/user/collection/${bookId}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -87,7 +87,7 @@ const BookPreview = ({ bookId, bookTitle, onClose }) => {
         return;
       }
 
-      const response = await fetch(`/api/books/user/reading-list/${bookId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/books/user/reading-list/${bookId}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

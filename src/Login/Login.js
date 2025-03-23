@@ -104,7 +104,7 @@ const LoginRegistration = ({ initialView = 'login' }) => {
   const handleRegister = async (e) => {
     e.preventDefault();
     
-    if (!regEmail || !regUsername || !regPassword) {
+    if (!regUsername|| !regEmail || !regPassword) {
       setRegisterError('Please fill out all fields');
       return;
     }
@@ -113,7 +113,7 @@ const LoginRegistration = ({ initialView = 'login' }) => {
     setRegisterError('');
     
     try {
-      const result = await AuthService.register(regEmail, regUsername, regPassword);
+      const result = await AuthService.register(regUsername, regEmail, regPassword);
       
       if (result.success) {
         // Registration successful
@@ -227,17 +227,6 @@ const LoginRegistration = ({ initialView = 'login' }) => {
             )}
             <div className="input-box">
               <input 
-                type="email" 
-                className="inputs input-field" 
-                placeholder="Email" 
-                required 
-                value={regEmail}
-                onChange={(e) => setRegEmail(e.target.value)}
-              />
-              <IoMdMail className="icon" />
-            </div>
-            <div className="input-box">
-              <input 
                 type="text" 
                 className="inputs input-field" 
                 placeholder="Username" 
@@ -246,6 +235,17 @@ const LoginRegistration = ({ initialView = 'login' }) => {
                 onChange={(e) => setRegUsername(e.target.value)}
               />
               <IoMdPerson className="icon" />
+            </div>
+            <div className="input-box">
+              <input 
+                type="email" 
+                className="inputs input-field" 
+                placeholder="Email" 
+                required 
+                value={regEmail}
+                onChange={(e) => setRegEmail(e.target.value)}
+              />
+              <IoMdMail className="icon" />
             </div>
             <div className="input-box">
               <input 
