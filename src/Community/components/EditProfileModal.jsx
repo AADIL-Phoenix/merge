@@ -93,7 +93,7 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
       if (Object.keys(profileData).length > 0) {
         try {
           console.log('Updating profile:', { userId: user._id, data: profileData });
-          const updateResponse = await axios.patch(`/api/users/${user._id}`, profileData, config);
+          const updateResponse = await axios.patch(`${process.env.REACT_APP_API_URL}/api/users/${user._id}`, profileData, config);
           console.log('Profile update response:', updateResponse.data);
           updatedUser = { ...updatedUser, ...updateResponse.data };
         } catch (err) {
@@ -110,7 +110,7 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
 
           console.log('Updating photo for user:', user._id);
           const photoResponse = await axios.post(
-            `/api/users/${user._id}/photo`,
+            `${process.env.REACT_APP_API_URL}/api/users/${user._id}/photo`,
             photoFormData,
             {
               headers: {

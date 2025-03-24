@@ -35,7 +35,7 @@ class AuthService {
   // Login user
   static async login(email, password) {
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -67,7 +67,7 @@ class AuthService {
   // Register user
   static async register(name, email, password) {
     try {
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
@@ -105,7 +105,7 @@ class AuthService {
         return { success: false };
       }
       
-      const response = await fetch('/api/auth/user', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/user`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -134,7 +134,7 @@ class AuthService {
     try {
       const token = localStorage.getItem('token');
       if (token) {
-        await fetch('/api/auth/logout', {
+        await fetch(`${process.env.REACT_APP_API_URL}/api/auth/logout`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` }
         });

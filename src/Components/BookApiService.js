@@ -75,7 +75,7 @@ const BookApiService = {
       } else {
         // Use custom API
         const queryString = new URLSearchParams(params).toString();
-        const response = await fetch(`/api/books?${queryString}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/books?${queryString}`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
@@ -141,7 +141,7 @@ const BookApiService = {
         };
       } else {
         // Use custom API
-        const response = await fetch(`/api/books/top-rated?limit=${limit}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/books/top-rated?limit=${limit}`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
@@ -203,7 +203,7 @@ const BookApiService = {
         };
       } else {
         // Use custom API
-        const response = await fetch(`/api/books/${id}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/books/${id}`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
@@ -264,7 +264,7 @@ const BookApiService = {
         };
       } else {
         // Use custom API for personalized recommendations
-        const response = await fetch('/api/recommendations/personalized', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recommendations/personalized`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',

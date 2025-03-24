@@ -36,7 +36,7 @@ const UserProfile = () => {
           throw new Error('No authentication token found');
         }
         
-        const response = await axios.get(`/api/users/${idToFetch}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/${idToFetch}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -66,7 +66,7 @@ const UserProfile = () => {
         throw new Error('No authentication token found');
       }
 
-      await axios.post(`/api/users/${userData._id}/${endpoint}`, {}, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/users/${userData._id}/${endpoint}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`
         }
